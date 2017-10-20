@@ -5,7 +5,7 @@ var bal1;
 var xspeedorgineel;
 var yspeedorgineel;
 var ballen = [];
-var aantalballen = 50;
+var aantalballen = 20;
 var fpstext = document.getElementById('fps');
 var cr;
 var cg;
@@ -18,21 +18,21 @@ function setup() {
   background(230);
 
   for (var i = 0; i < aantalballen; i++){
-    var cr = Math.floor(Math.random() * 255);
-    var cg = Math.floor(Math.random() * 255);
-    var cb = Math.floor(Math.random() * 255);
-    var balstraal = Math.floor(Math.random() * 40 + 10);
-    xspeedorgineel = Math.floor(Math.random() * 20 + 1);
-    yspeedorgineel = Math.floor(Math.random() * 20 + 1);
-    var xpos = Math.floor(Math.random() * canvaswidth);
-    var ypos = Math.floor(Math.random() * canvasheight);
+    var cr = random(1, 255);
+    var cg = random(1, 255);
+    var cb = random(1, 255);
+    var balstraal = random(15, 40);
+    xspeedorgineel = random(-25, 25);
+    yspeedorgineel = random(-25, 25);
+    var xpos = random(1, canvaswidth);
+    var ypos = random(1, canvasheight);
     balletje1 = new Ball(xpos, ypos, balstraal, xspeedorgineel, yspeedorgineel, cr, cg, cb); //Maak een nieuwe instantie van Bal()
     // balletje2 = new Ball(2, 21, 30, 2, 1); //Maak een nieuwe instantie van Bal()
 
     ballen.push(balletje1); //Push voegt de bal aan het einde van het array toe
   }
 
-  player
+  player = new playerobject();
 }
 
 function draw() {
@@ -45,7 +45,25 @@ function draw() {
     bal = ballen[i]; //Haal een bal uit het array
     bal.teken();
     bal.beweeg();
-    bal.colide();
+  }
+  playerobject.teken();
+  playerobject.colide();
+}
+
+function playerobject(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
+  this.x = _x;
+  this.y = _y;
+  this.straal = _straal;
+  this.xspeed = _xspeed;
+  this.yspeed = _yspeed;
+
+  this.teken = function() {
+    noStroke();
+    fill(0);
+    rect(this.x, this.y, this.straal, this.straal);
+  }
+
+  this.colide = function() {
   }
 }
 
@@ -77,9 +95,5 @@ function Ball(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
     }
     this.x += this.xspeed;
     this.y += this.yspeed;
-  }
-
-  this.colide = function() {
-    if (Math.sqrt(dx*dx + dy*dy)
   }
 }
