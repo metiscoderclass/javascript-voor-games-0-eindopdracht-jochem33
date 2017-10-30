@@ -5,12 +5,14 @@ var bal1;
 var xspeedorgineel;
 var yspeedorgineel;
 var ballen = [];
+var players = [];
 var aantalballen = 20;
 var fpstext = document.getElementById('fps');
 var cr;
 var cg;
 var cb;
 var balstraal;
+var playerstraal = 40;
 
 function setup() {
   frameRate(60)
@@ -26,13 +28,12 @@ function setup() {
     yspeedorgineel = random(-25, 25);
     var xpos = random(1, canvaswidth);
     var ypos = random(1, canvasheight);
-    balletje1 = new Ball(xpos, ypos, balstraal, xspeedorgineel, yspeedorgineel, cr, cg, cb); //Maak een nieuwe instantie van Bal()
-    // balletje2 = new Ball(2, 21, 30, 2, 1); //Maak een nieuwe instantie van Bal()
 
-    ballen.push(balletje1); //Push voegt de bal aan het einde van het array toe
+    balletje1 = new Ball(xpos, ypos, balstraal, xspeedorgineel, yspeedorgineel, cr, cg, cb);
+    ballen.push(balletje1);
   }
-
-  player = new playerobject();
+  player = new playerobject(500, 500, playerstraal);
+  players.push(player);
 }
 
 function draw() {
@@ -45,25 +46,21 @@ function draw() {
     bal = ballen[i]; //Haal een bal uit het array
     bal.teken();
     bal.beweeg();
+    bal.colide();
   }
-  playerobject.teken();
-  playerobject.colide();
+  player1 = players[0];
+  player1.teken();
 }
 
-function playerobject(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
+function playerobject(_x, _y, _straal) {
   this.x = _x;
   this.y = _y;
   this.straal = _straal;
-  this.xspeed = _xspeed;
-  this.yspeed = _yspeed;
 
   this.teken = function() {
     noStroke();
-    fill(0);
-    rect(this.x, this.y, this.straal, this.straal);
-  }
-
-  this.colide = function() {
+    fill(50, 50, 50);
+    ellipse(this.x, this.y, this.straal, this.straal);
   }
 }
 
@@ -95,5 +92,13 @@ function Ball(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
     }
     this.x += this.xspeed;
     this.y += this.yspeed;
+  }
+
+  this.colide = function() {
+    var dx = 500 - this.x;
+    var dy = 500 - this.y;
+    if (Math.sqrt(dx*dx + dy*dy) <= this.straal + playerstraal){
+      alert("prettig");
+    }
   }
 }
