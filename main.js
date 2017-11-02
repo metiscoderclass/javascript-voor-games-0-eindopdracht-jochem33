@@ -6,13 +6,15 @@ var xspeedorgineel;
 var yspeedorgineel;
 var ballen = [];
 var players = [];
-var aantalballen = 20;
+var aantalballen = 10;
 var fpstext = document.getElementById('fps');
 var cr;
 var cg;
 var cb;
 var balstraal;
 var playerstraal = 40;
+var playerX;
+var playerY;
 
 function setup() {
   frameRate(60)
@@ -20,9 +22,9 @@ function setup() {
   background(230);
 
   for (var i = 0; i < aantalballen; i++){
-    var cr = random(1, 255);
-    var cg = random(1, 255);
-    var cb = random(1, 255);
+    var cr = random(1, 10);
+    var cg = random(1, 10);
+    var cb = random(1, 10);
     var balstraal = random(15, 40);
     xspeedorgineel = random(-25, 25);
     yspeedorgineel = random(-25, 25);
@@ -53,14 +55,14 @@ function draw() {
 }
 
 function playerobject(_x, _y, _straal) {
-  this.x = _x;
-  this.y = _y;
+  playerX = _x;
+  playerY = _y;
   this.straal = _straal;
 
   this.teken = function() {
     noStroke();
-    fill(50, 50, 50);
-    ellipse(this.x, this.y, this.straal, this.straal);
+    fill(250, 50, 50);
+    ellipse(playerX, playerY, this.straal, this.straal);
   }
 }
 
@@ -70,10 +72,13 @@ function Ball(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
   this.straal = _straal;
   this.xspeed = _xspeed;
   this.yspeed = _yspeed;
+  this.cr = _cr;
+  this.cg = _cg;
+  this.cb = _cb;
 
   this.teken = function() {
     noStroke();
-    fill(_cr, _cg, _cb);
+    fill(this.cr, this.cg, this.cb);
     ellipse(this.x, this.y, this.straal, this.straal);
   }
 
@@ -95,10 +100,13 @@ function Ball(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
   }
 
   this.colide = function() {
-    var dx = 500 - this.x;
-    var dy = 500 - this.y;
-    if (Math.sqrt(dx*dx + dy*dy) <= this.straal + playerstraal){
-      alert("prettig");
+    var dx = playerX - this.x;
+    var dy = playerY - this.y;
+    if (Math.sqrt(dx*dx + dy*dy) <= playerstraal + this.straal){
+      console.log("prettig");
+      this.cr = 10;
+      this.cg = 250;
+      this.cb = 10;
     }
   }
 }
