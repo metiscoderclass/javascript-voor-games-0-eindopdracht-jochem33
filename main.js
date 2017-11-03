@@ -43,7 +43,7 @@ function setup() {
 }
 
 function draw() {
-  background(255);
+  background(255, 50);
 
   text(Math.floor(frameRate()), 200, 10);
 
