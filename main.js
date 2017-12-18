@@ -3,8 +3,8 @@ var canvaswidth = window.innerWidth - 30;
 var canvasheight = window.innerHeight - 30;
 var ballen = [];
 var players = [];
-var muren = [];
-var aantalballen = 20;
+var muurs = [];
+var aantalballen = 5  ;
 var fpstext = document.getElementById('fps');
 var cr;
 var cg;
@@ -13,8 +13,9 @@ var balstraal;
 var playerstraal = 40;
 var playerX;
 var playerY;
-var playerXspeed = 15;
-var playerYspeed = 15;
+var playerXspeed = 10;
+var playerYspeed = 10;
+var volume;
 
 function setup() {
   frameRate(60)
@@ -23,17 +24,16 @@ function setup() {
 
   player = new playerobject(500, 500, playerstraal, playerXspeed, playerYspeed);
   players.push(player);
-
-  muurtje = new Muur(200, 200, 40, 40);
-  muren.push(muurtje);
+  //muur = new muurobject(500, 500, playerstraal, playerXspeed, playerYspeed);
+  //muurs.push(muur);
 
   for (var i = 0; i < aantalballen; i++){
     var cr = random(1, 250);
     var cg = random(1, 250);
     var cb = random(1, 250);
     var balstraal = random(15, 40);
-    var xspeed = random(-10, 10);
-    var yspeed = random(-10, 10);
+    var xspeed = random(6, 8);
+    var yspeed = xspeed + random(-2, 2);
     var xpos = random(1, canvaswidth);
     var ypos = random(1, canvasheight);
 
@@ -43,7 +43,7 @@ function setup() {
 }
 
 function draw() {
-  background(255, 50);
+  background(1, 50);
 
   text(Math.floor(frameRate()), 200, 10);
 
@@ -58,15 +58,16 @@ function draw() {
   player1.teken();
   player1.move();
 
-  muur1 = muren[0];
-  muur1.teken;
-
-
+  //muur1 = muurs[0];
+  //muur1.teken();
 }
+
 
 function playerobject(_x, _y, _straal, _xspeed, _yspeed) {
   playerX = _x;
   playerY = _y;
+  //playerX2 = _x2;
+  //playerY2 = _y2
   this.straal = _straal;
   this.xspeed = _xspeed;
   this.yspeed = _yspeed;
@@ -89,16 +90,16 @@ function playerobject(_x, _y, _straal, _xspeed, _yspeed) {
     }
 
     if (playerX + this.straal / 2> canvaswidth) {
-      playerX = canvaswidth - 10;
+      playerX = canvaswidth - 30;
     }
     if (playerY + this.straal / 2 > canvasheight) {
-      playerY = canvasheight - 10;
+      playerY = canvasheight - 30;
     }
     if (playerX - this.straal / 2 < 0) {
-      playerX = 10;
+      playerX = 30;
     }
     if (playerY - this.straal / 2 < 0) {
-      playerY = 10;
+      playerY = 30;
     }
   }
 }
@@ -116,12 +117,12 @@ function Ball(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
 
   this.teken = function() {
     noStroke();
-    fill(this.cr, this.cg, this.cb);
+    fill(this.cr, this.cg, this.cb, 200);
     ellipse(this.x, this.y, this.straal, this.straal);
   }
 
   this.beweeg = function() {
-    /*
+
     if (this.x + this.straal / 2> canvaswidth) {
       this.xspeed = this.xspeed * -1;
     }
@@ -133,9 +134,13 @@ function Ball(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
     }
     if (this.y - this.straal / 2 < 0) {
       this.yspeed = this.yspeed * -1;
-    }*/
-    this.x += this.xspeed;
-    this.y += this.yspeed;
+    }
+    if(this.x != playerX) {
+      this.x += this.xspeed;
+    }
+    if (this.y != playerY) {
+      this.y += this.yspeed;
+    }
 
     if (this.xspeed > 0) {
       if (playerX < this.x) {
@@ -162,30 +167,7 @@ function Ball(_x, _y, _straal, _xspeed, _yspeed, _cr, _cg, _cb) {
     var dx = playerX - this.x;
     var dy = playerY - this.y;
     if (Math.sqrt(dx*dx + dy*dy) <= playerstraal + this.straal){
-      this.x = 10;
-      this.y = 10;
-    }
-  }
-}
-
-
-function Muur(_x, _y, _width, _height) {
-  this.x = _x;
-  this.y = _y;
-  this.width = _width;
-  this.height = _height;
-
-  this.teken = function() {
-    stroke(10)
-    fill(0, 0, 0);
-    ellipse(this.x, this.y, this.width, this.height);
-  }
-
-  this.colide = function() {
-    var dx = playerX - this.x;
-    var dy = playerY - this.y;
-    if (Math.sqrt(dx*dx + dy*dy) <= playerstraal + this.width){
-      // code
+      //code
     }
   }
 }
